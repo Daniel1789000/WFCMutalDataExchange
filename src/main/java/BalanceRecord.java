@@ -21,21 +21,25 @@ public class BalanceRecord {
     HashMap<String,Integer> columnOrder;
     //figure out the column order
     BalanceRecord(String _columnOrder, String row){
-        columnOrder = orderOfColumns(_columnOrder);
-        String[] columnValues = row.split(",");
-        firstName = columnValues[columnOrder.get(FIRST_NAME)];
-        lastName = columnValues[columnOrder.get(LAST_NAME)];
-        address = columnValues[columnOrder.get(ADDRESS)];
-        city = columnValues[columnOrder.get(CITY)];
-        state = columnValues[columnOrder.get(STATE)];
-        zip = columnValues[columnOrder.get(ZIP)];
-        phone = normalizePhoneNumber(columnValues[columnOrder.get(PHONE)]);
-        balanceString = columnValues[columnOrder.get(BALANCE)];
-        if(balanceString.contains("$")) {
-            //if the '$' character is not in the first position then all bets are off
-            balanceString = balanceString.substring(1);
+        if(_columnOrder != null && row != null && !_columnOrder.isEmpty() && !row.isEmpty()) {
+            columnOrder = orderOfColumns(_columnOrder);
+            String[] columnValues = row.split(",");
+            firstName = columnValues[columnOrder.get(FIRST_NAME)];
+            lastName = columnValues[columnOrder.get(LAST_NAME)];
+            address = columnValues[columnOrder.get(ADDRESS)];
+            city = columnValues[columnOrder.get(CITY)];
+            state = columnValues[columnOrder.get(STATE)];
+            zip = columnValues[columnOrder.get(ZIP)];
+            phone = normalizePhoneNumber(columnValues[columnOrder.get(PHONE)]);
+            balanceString = columnValues[columnOrder.get(BALANCE)];
+            if (balanceString.contains("$")) {
+                //if the '$' character is not in the first position then all bets are off
+                balanceString = balanceString.substring(1);
+            }
+            balance = Float.parseFloat(balanceString);
+        }else{
+            throw new IllegalArgumentException("missing columnOrder or row");
         }
-        balance = Float.parseFloat(balanceString);
     }
     //use the default column order
     BalanceRecord(String row){
